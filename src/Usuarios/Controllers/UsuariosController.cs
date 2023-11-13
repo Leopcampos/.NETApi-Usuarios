@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Usuarios.Data.Dto;
+using Usuarios.Services;
 
 namespace Usuarios.Controllers
 {
@@ -7,10 +8,18 @@ namespace Usuarios.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        [HttpPost]
-        public IActionResult CadastraUsuario(CreateUsuarioDto dto)
+        private CadastroService _cadastroService;
+
+        public UsuariosController(CadastroService cadastroService)
         {
-            throw new NotImplementedException();
+            _cadastroService = cadastroService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CadastraUsuario(CreateUsuarioDto dto)
+        {
+            await _cadastroService.Cadastra(dto);
+            return Ok("Usuário cadastrado!");
         }
     }
 }
